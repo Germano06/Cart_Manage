@@ -1,11 +1,9 @@
-import email
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import AdminSerializer, CartSerializer, ProductsSerializer, UserSerializer
-from .form import ImageForm
 from .models import Admin, Cart, Products, User
 
 # Create your views here.
@@ -44,8 +42,9 @@ def getProducts(request):
     serializer = ProductsSerializer(prods, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def getProduct(request,pk):
+def getProduct(request, pk):
     prods = Products.objects.get(id=pk)
     serializer = ProductsSerializer(prods, many=False)
     return Response(serializer.data)
@@ -74,20 +73,8 @@ def createProduct(request):
     return Response(serializer.data)
 
 
-def gallery(request):
-    if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponse('successfully uploaded')
-    else:
-        form = ImageForm()
-    return render(request, "template/upForm.html", {"form": form})
-
-
 @api_view(['POST'])
-def createCart(request):
+def addCart(request):
     serializer = CartSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -96,6 +83,6 @@ def createCart(request):
 
 @api_view(['DELETE'])
 def delCart(request, pk):
-    crt = Cart.objects.get(id=pk)
+    crt = Cart.objects.filter(prod=pk)
     crt.delete()
     return Response("Checkout Successful!")

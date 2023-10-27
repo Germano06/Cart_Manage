@@ -9,7 +9,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { Button, Drawer } from "@mui/material";
+import { Button, Divider, Drawer } from "@mui/material";
 import DrawerList from "./DrawerList";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +29,18 @@ export default function ButtonAppBar(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCart = () => {
+    setAnchorEl(null);
+    navigate("/cart");
+  };
+
+  const handleLogout = (e) => {
+    sessionStorage.removeItem("Uname");
+    setAnchorEl(null);
+    setAuth(null);
+    navigate("/home");
   };
 
   const toggleDrawer = (open) => (event) => {
@@ -91,7 +103,9 @@ export default function ButtonAppBar(props) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleCart}>My Cart</MenuItem>
+                <Divider />
+                <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>
             </div>
           ) : (

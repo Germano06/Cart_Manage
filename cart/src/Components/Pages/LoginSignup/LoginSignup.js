@@ -47,7 +47,7 @@ export default function LoginSignup() {
         if (fl) {
           sessionStorage.setItem("Uname", formValue.email);
           if (sessionStorage.getItem("Uname") !== "") {
-            navigate("/cart");
+            navigate("/home");
             alert(sessionStorage.getItem("Uname"));
             setAut(true);
             setAction("Sign Up");
@@ -59,7 +59,7 @@ export default function LoginSignup() {
     };
     
     if (action === "Sign Up") {
-      var url = "http://127.0.0.1:8000/api/create-user/";
+      url = "http://127.0.0.1:8000/api/create-user/";
       const formData = new FormData();
       formData.append("id", null);
       formData.append("name", formValue.name);
