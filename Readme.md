@@ -5,7 +5,7 @@
 
 - Open the project in VS Code and in the terminal run
  
-> env/Scripts/active
+> env/Scripts/activate
 
 - This is to activate the python virtual environment.
 - Make sure PosegreSql is configured inside the settings.py file in the cart_manage folder inside the project folder and run the following
