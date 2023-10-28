@@ -20,12 +20,12 @@
 
 ## To Start the development server
 
-- Open the cart folder in a separate VS Code window or cd into the cart direcctory from a new terminal and run
+- Open the cart folder in a separate VS Code window or cd into the cart directory from a new terminal and run
 
 > npm start
 
 - This will start the development server.
-- On opening the start page will be a home page where the user will see all available products.
+- On opening, the start page will be a home page where the user will see all available products.
 - If the user wishis to place an order he/she has to login.
 - The admin and user login is from the same login page. if the user enters the admin email address he/she will be loggedin as an admin.
 - p.s. During logins the password isn't checked in this project and only the email address can be used. Later the use of password with email can be done.
@@ -33,11 +33,11 @@
 ## User Logged in
 
 - When the user logs in he can get the option of adding the products to cart by clicking the add to cart button.
-- On clicking this button the item will be removed from the cart.
+- On clicking this button again the item will be removed from the cart.
 - If the user wishes to check his/her cart they have to click on the top right button and click on My Cart.
-- In the cart page the user an review the products they will be checking out and delete and product from the cart here.
+- In the cart page the user can review the products they will be checking out and delete any product from the cart here.
 - If the user wishes to checkout with the selected products in their cart they can click the confirm order button and checkout.
-- After the user chcks out a log is maintained in the database for the admin to check later.
+- After the user checks out, a log is maintained in the database for the admin to check later.
 - The user can logout using the logout option in the top right menu.
 
 ## Admin Logged in
