@@ -45,12 +45,15 @@ export default function ButtonAppBar(props) {
   const handleLogout = (e) => {
     if (sessionStorage.getItem("Uname")) {
       sessionStorage.removeItem("Uname");
-    } else {
+    }
+    if (sessionStorage.getItem("admin")) {
       sessionStorage.removeItem("admin");
     }
     setAnchorEl(null);
     setAuth(null);
-    window.location.reload(false);
+    if (props.page === "Home") {
+      window.location.reload(false);
+    }
     navigate("/home");
   };
 
@@ -113,14 +116,13 @@ export default function ButtonAppBar(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 {adm ? (
                   <MenuItem onClick={handleProd}>Add Product</MenuItem>
                 ) : (
                   <MenuItem onClick={handleCart}>My Cart</MenuItem>
                 )}
-                
+
                 <Divider />
                 <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>

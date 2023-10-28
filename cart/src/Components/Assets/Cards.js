@@ -104,7 +104,7 @@ export default function Cards(props) {
               <FavoriteIcon />
             </Fab>
           </div>
-        ) : (
+        ) : props.page === "Cart" || adm ? (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Fab
               id={props.ky}
@@ -122,6 +122,8 @@ export default function Cards(props) {
               <Delete />
             </Fab>
           </div>
+        ) : (
+          <div />
         )}
       </CardContent>
     </Card>
