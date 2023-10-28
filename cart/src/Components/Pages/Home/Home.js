@@ -5,8 +5,16 @@ import { Box } from "@mui/material";
 
 const Home = () => {
   const aut = sessionStorage.getItem("Uname");
+  const adm = sessionStorage.getItem("admin");
   const [prod, setProd] = useState([]);
-  var url = `http://127.0.0.1:8000/api/get-products/`;
+  const [del, setDel] = useState();
+  var url = "";
+
+  if (aut) {
+    url = `http://127.0.0.1:8000/api/get-products/`;
+  } else {
+    url = `http://127.0.0.1:8000/api/get-all-products/`;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,8 +28,12 @@ const Home = () => {
     };
 
     fetchData();
-  }, [aut, url]);
-  
+  }, [aut, del]);
+
+  const crtDeleted = (deletedItemId) => {
+    setDel(deletedItemId);
+  };
+
   return (
     <div>
       <ButtonAppBar page="Home" au={aut} />
@@ -36,22 +48,33 @@ const Home = () => {
         }}
       >
         <center>
-          <h1>E-Shopping</h1>
+          {adm ? <h1>All Products</h1> : <h1>E-Shopping</h1>}
+          {console.log(aut, adm)}
         </center>
         <hr />
-        {prod.map(function (pro, index) {
-          return (
-            <Cards
-              key={index}
-              title={pro.title}
-              subheader={pro.description}
-              image={pro.img}
-              active={pro.active}
-              ky={pro.id}
-              page="Home"
-            />
-          );
-        })}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center space-between",
+            width: "auto",
+          }}
+        >
+          {prod.map(function (pro, index) {
+            return (
+              <Cards
+                key={index}
+                title={pro.title}
+                subheader={pro.description}
+                image={pro.img}
+                active={pro.active}
+                ky={pro.id}
+                page="Home"
+                delState={crtDeleted}
+              />
+            );
+          })}
+        </div>
       </Box>
     </div>
   );

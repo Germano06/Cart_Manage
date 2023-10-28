@@ -18,6 +18,7 @@ export default function ButtonAppBar(props) {
   const [auth, setAuth] = useState(props.au);
   const [anchorEl, setAnchorEl] = useState(null);
   const [state, setState] = useState(false);
+  const adm = sessionStorage.getItem("admin");
 
   const handleChange = () => {
     navigate("/signUp");
@@ -36,10 +37,20 @@ export default function ButtonAppBar(props) {
     navigate("/cart");
   };
 
+  const handleProd = () => {
+    setAnchorEl(null);
+    navigate("/products");
+  };
+
   const handleLogout = (e) => {
-    sessionStorage.removeItem("Uname");
+    if (sessionStorage.getItem("Uname")) {
+      sessionStorage.removeItem("Uname");
+    } else {
+      sessionStorage.removeItem("admin");
+    }
     setAnchorEl(null);
     setAuth(null);
+    window.location.reload(false);
     navigate("/home");
   };
 
@@ -75,7 +86,7 @@ export default function ButtonAppBar(props) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {props.page}
           </Typography>
-          {auth ? (
+          {adm || auth ? (
             <div>
               <IconButton
                 size="large"
@@ -102,8 +113,14 @@ export default function ButtonAppBar(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleCart}>My Cart</MenuItem>
+                {adm ? (
+                  <MenuItem onClick={handleProd}>Add Product</MenuItem>
+                ) : (
+                  <MenuItem onClick={handleCart}>My Cart</MenuItem>
+                )}
+                
                 <Divider />
                 <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>

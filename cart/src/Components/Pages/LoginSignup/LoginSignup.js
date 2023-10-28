@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./LoginSignup.css";
-import {  Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import ButtonAppBar from "../../Assets/ButtonAppBar";
 import { useNavigate } from "react-router-dom";
 
@@ -47,17 +47,16 @@ export default function LoginSignup() {
         if (fl) {
           sessionStorage.setItem("Uname", formValue.email);
           if (sessionStorage.getItem("Uname") !== "") {
-            navigate("/home");
-            alert(sessionStorage.getItem("Uname"));
             setAut(true);
             setAction("Sign Up");
           }
         } else alert("try again!");
       } else {
-        navigate("/products");
+        sessionStorage.setItem("admin", formValue.email);
       }
+      navigate("/home");
     };
-    
+
     if (action === "Sign Up") {
       url = "http://127.0.0.1:8000/api/create-user/";
       const formData = new FormData();

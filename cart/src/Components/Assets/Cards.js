@@ -13,22 +13,26 @@ import { Delete } from "@material-ui/icons";
 export default function Cards(props) {
   const path = "http://127.0.0.1:8000";
   const [active, setActive] = useState(true);
-  const [del, setDel] = useState(false);
+  const aut = sessionStorage.getItem("Uname");
+  const adm = sessionStorage.getItem("admin");
   var url = "";
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     const deletedItemId = e.currentTarget.id;
-    console.log(deletedItemId);
-    url = `http://127.0.0.1:8000/api/delete-cart/${deletedItemId}`;
-    fetch(url, { method: "DELETE" })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-    setDel(!del);
-    props.delState(deletedItemId);
+    if (adm) {
+      url = `http://127.0.0.1:8000/api/delete-product/${deletedItemId}`;
+    } else {
+      url = `http://127.0.0.1:8000/api/delete-cart/${deletedItemId}`;
+    }
+    const response = await fetch(url, { method: "DELETE" });
+    const data = await response.json();
+    console.log(data);
+    if (props.page === "Cart" || adm) {
+      props.delState(deletedItemId);
+    }
   };
 
   const handleCart = (e) => {
-    console.log(e.currentTarget.id);
     if (active) {
       url = `http://127.0.0.1:8000/api/add-cart/`;
       const formData = new FormData();
@@ -47,9 +51,9 @@ export default function Cards(props) {
   return (
     <Card
       sx={{
-        width: 345,
+        minWidth: 300,
         margin: 2,
-        border: "solid grey",
+        border: "solid teal",
         alignSelf: "center",
         bgcolor: "rgba(100,230,240,0.6)",
       }}
@@ -60,14 +64,19 @@ export default function Cards(props) {
         height="194"
         image={path + props.image}
         alt=""
-        sx={{ objectFit: "contain", bgcolor: "rgb(255,255,255)" }}
+        sx={{
+          objectFit: "contain",
+          bgcolor: "rgb(255,255,255)",
+          borderTop: "solid teal",
+          borderBottom: "solid teal",
+        }}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {props.active ? "Available" : ""}
+          {props.active ? "Available" : "Unavailable"}
         </Typography>
         <Divider />
-        {props.page === "Home" ? (
+        {props.page === "Home" && aut ? (
           <div style={{ display: "flex", justifyContent: "right" }}>
             <Fab
               id={props.ky}
@@ -75,6 +84,7 @@ export default function Cards(props) {
               aria-label="add"
               size="medium"
               sx={{ margin: 1, marginTop: 2 }}
+              disabled={sessionStorage.getItem("Uname") ? false : true}
               onClick={handleCart}
             >
               <AddShoppingCart />
@@ -90,7 +100,6 @@ export default function Cards(props) {
                 bgcolor: red[600],
                 "&:hover": { bgcolor: red[700] },
               }}
-              onClick={handleDelete}
             >
               <FavoriteIcon />
             </Fab>

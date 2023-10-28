@@ -1,10 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
-from .serializers import AdminSerializer, CartSerializer, ProductsSerializer, UserSerializer
-from .models import Admin, Cart, Products, User
+from .serializers import AdminSerializer, CartSerializer, ProdLogSerializer, ProductsSerializer, UserSerializer
+from .models import Admin, Cart, ProdLog, Products, User
 
 # Create your views here.
 
@@ -44,6 +45,13 @@ def getProducts(request):
 
 
 @api_view(['GET'])
+def getAllProducts(request):
+    prods = Products.objects.all().order_by("-id")
+    serializer = ProductsSerializer(prods, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def getProduct(request, pk):
     prods = Products.objects.get(id=pk)
     serializer = ProductsSerializer(prods, many=False)
@@ -57,6 +65,13 @@ def getCart(request, em):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def getProdLog(request):
+    prod = ProdLog.objects.all().order_by("-id")
+    serializer = ProdLogSerializer(prod, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['POST'])
 def createUser(request):
     serializer = UserSerializer(data=request.data)
@@ -66,11 +81,13 @@ def createUser(request):
 
 
 @api_view(['POST'])
+@parser_classes([MultiPartParser])
 def createProduct(request):
     serializer = ProductsSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data)
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
 
 
 @api_view(['POST'])
@@ -81,8 +98,23 @@ def addCart(request):
     return Response(serializer.data)
 
 
+@api_view(['POST'])
+def addProdLog(request):
+    serializer = ProdLogSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
 @api_view(['DELETE'])
 def delCart(request, pk):
     crt = Cart.objects.filter(prod=pk)
     crt.delete()
     return Response("Checkout Successful!")
+
+
+@api_view(['DELETE'])
+def delProduct(request, pk):
+    prod = Products.objects.filter(id=pk)
+    prod.delete()
+    return Response("Product Deleted")

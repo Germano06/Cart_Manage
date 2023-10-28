@@ -44,7 +44,7 @@ const Products = () => {
         .then((response) => response.json())
         .then((data) => console.log("data", data));
     }
-  }, [formValue.img, formValue]);
+  }, [formValue.img]);
 
   function handleChange(e) {
     console.log(e.target.files[0]);
