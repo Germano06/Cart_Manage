@@ -80,7 +80,7 @@ const Cart = () => {
       })
         .then((response) => response.json())
         .then((data) => console.log(data));
-      alert("Checkout Seccessful!!");
+      alert("Checkout Successful!!");
     });
   };
 

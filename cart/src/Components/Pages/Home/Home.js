@@ -10,10 +10,10 @@ const Home = () => {
   const [del, setDel] = useState();
   var url = "";
 
-  if (aut) {
-    url = `http://127.0.0.1:8000/api/get-products/`;
-  } else {
+  if (adm) {
     url = `http://127.0.0.1:8000/api/get-all-products/`;
+  } else {
+    url = `http://127.0.0.1:8000/api/get-products/`;
   }
 
   useEffect(() => {
